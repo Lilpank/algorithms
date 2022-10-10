@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ELEMENT group (student*)>
+<!ELEMENT student (subject*,average?)>
+<!ATTLIST student
+        firstname CDATA #REQUIRED
+        lastname CDATA #REQUIRED
+        groupnumber CDATA #REQUIRED
+        >
+<!ELEMENT subject EMPTY>
+<!ATTLIST subject
+        title CDATA #REQUIRED
+        mark (1|2|3|4|5) #REQUIRED
+        >
+<!ELEMENT average (#PCDATA)>
