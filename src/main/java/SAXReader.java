@@ -1,4 +1,5 @@
 import org.json.JSONObject;
+import org.w3c.dom.ls.LSOutput;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -54,6 +55,7 @@ public class SAXReader extends DefaultHandler {
                            String qName) throws SAXException {
         printString("Конец элемента " + qName + ".");
         if (Objects.equals(qName, "student")) {
+
             group.put(studentName, subjects);
             subjects = new HashMap<>();
 
@@ -93,6 +95,7 @@ public class SAXReader extends DefaultHandler {
         indent += INDENT;
         String str = new String(ch, start, length);
         average = Integer.parseInt(str.trim());
+        printString("" + average);
         indent -= INDENT;
     }
 
@@ -115,10 +118,11 @@ public class SAXReader extends DefaultHandler {
         SAXParser parser = null;
         try {
             parser = factory.newSAXParser();
-            parser.parse("src\\main\\resources\\saxStudent.xml", handler);
+            parser.parse("file:///src/main/resources/saxStudent.xml", handler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         System.out.println();
     }
+
 }

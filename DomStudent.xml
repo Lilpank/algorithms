@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE group SYSTEM "group.dtd">
 <group>
     <student firstname="Krechka" lastname="Gachi" groupnumber="6406">
         <subject title="Maths" mark="5"/>
         <subject title="M" mark="3"/>
+        <average>5</average>
     </student>
     <student firstname="Ivan" lastname="Ivanov" groupnumber="6406">
         <subject title="Physics" mark="1"/>
         <subject title="Maths" mark="3"/>
         <subject title="M" mark="2"/>
-        <average>5</average>
     </student>
     <student firstname="In" lastname="OOO" groupnumber="6406">
         <subject title="Physics" mark="4"/>
         <subject title="pq" mark="3"/>
+        <average>5</average>
     </student>
 </group>
