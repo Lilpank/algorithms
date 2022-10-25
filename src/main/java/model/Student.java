@@ -6,6 +6,17 @@ import java.util.HashMap;
 public class Student {
     private String firstname = "";
     private String lastname = "";
+
+    public String getGroupnumber() {
+        return groupnumber;
+    }
+
+    public void setGroupnumber(String groupnumber) {
+        this.groupnumber = groupnumber;
+    }
+
+    private String groupnumber = "";
+
     private HashMap<String, Integer> subjects = new HashMap<>();
 
     public void setFirstname(String firstname) {

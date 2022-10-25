@@ -5,7 +5,14 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,9 +84,10 @@ public class ReaderDOM {
                 Element element = (Element) node;
                 student.setFirstname(node.getAttributes().getNamedItem("firstname").getTextContent());
                 student.setLastname(node.getAttributes().getNamedItem("lastname").getTextContent());
+                student.setGroupnumber(node.getAttributes().getNamedItem("groupnumber").getTextContent());
                 try {
                     student.setAvg(Integer.parseInt(element.getElementsByTagName("average").item(0).getTextContent()));
-                } catch (NullPointerException exception) {
+                } catch (NullPointerException ignored) {
                 }
 
                 NodeList salaryNodeList = element.getElementsByTagName("subject");
@@ -96,8 +104,25 @@ public class ReaderDOM {
         return students;
     }
 
-    public boolean checkAVG() {
-        return false;
+    public static void checkAVG(Student student) {
+        var subjects = student.getSubjects();
+        var numbers = subjects.values();
+        var avg = numbers.stream().reduce(Integer::sum).orElse(0) / numbers.toArray().length;
+        if (avg != student.getAvg()) {
+            student.setAvg(avg);
+        }
+    }
+
+    private static void writeXml(Document doc,
+                                 OutputStream output)
+            throws TransformerException {
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(output);
+        transformer.transform(source, result);
     }
 
     public static void main(String[] args) {
@@ -110,12 +135,40 @@ public class ReaderDOM {
             document.getDocumentElement().normalize();
             NodeList list = document.getElementsByTagName("student");
             ArrayList<Student> students = ReaderDOM.parseInfoFromXML(list);
-
             for (var st : students) {
-                System.out.println(st.toString());
+                checkAVG(st);
             }
+            document = builder.newDocument();
+            Element rootElement = document.createElement("group");
+            document.appendChild(rootElement);
+
+            for (var stud : students) {
+                Element student = document.createElement("student");
+                rootElement.appendChild(student);
+                student.setAttribute("firstname", stud.getFirstname());
+                student.setAttribute("lastname", stud.getLastname());
+                student.setAttribute("groupnumber", stud.getGroupnumber());
+
+
+                var subjects = stud.getSubjects();
+
+                Document finalDocument = document;
+                subjects.forEach((key, value) -> {
+                    Element subject = finalDocument.createElement("subject");
+                    student.appendChild(subject);
+                    subject.setAttribute("title", key);
+                    subject.setAttribute("mark", String.valueOf(value));
+                });
+                var avg = document.createElement("average");
+                avg.setTextContent(String.valueOf(stud.getAvg()));
+                student.appendChild(avg);
+            }
+
+            writeXml(document, System.out);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
+        } catch (TransformerException e) {
+            throw new RuntimeException(e);
         }
     }
 }
