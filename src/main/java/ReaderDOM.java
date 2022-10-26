@@ -11,6 +11,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -104,67 +106,72 @@ public class ReaderDOM {
         return students;
     }
 
-    public static void checkAVG(Student student) {
-        var subjects = student.getSubjects();
-        var numbers = subjects.values();
-        var avg = numbers.stream().reduce(Integer::sum).orElse(0) / numbers.toArray().length;
-        if (avg != student.getAvg()) {
-            student.setAvg(avg);
+    public static void checkAVG(ArrayList<Student> students) {
+        for (var student : students) {
+            var subjects = student.getSubjects();
+            var numbers = subjects.values();
+            var avg = numbers.stream().reduce(Integer::sum).orElse(0) / numbers.toArray().length;
+            if (avg != student.getAvg()) {
+                student.setAvg(avg);
+            }
         }
     }
 
-    private static void writeXml(Document doc,
-                                 OutputStream output)
+    private static void writeXml(Document doc, String fileName)
             throws TransformerException {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(output);
+        StreamResult result = new StreamResult(new File(fileName));
         transformer.transform(source, result);
+    }
+
+    public static Object formingXMLData(ArrayList<Student> students, DocumentBuilder builder) {
+        var document = builder.newDocument();
+        Element rootElement = document.createElement("group");
+        document.appendChild(rootElement);
+
+        for (var stud : students) {
+            Element student = document.createElement("student");
+            rootElement.appendChild(student);
+            student.setAttribute("firstname", stud.getFirstname());
+            student.setAttribute("lastname", stud.getLastname());
+            student.setAttribute("groupnumber", stud.getGroupnumber());
+
+
+            var subjects = stud.getSubjects();
+
+            subjects.forEach((key, value) -> {
+                Element subject = document.createElement("subject");
+                student.appendChild(subject);
+                subject.setAttribute("title", key);
+                subject.setAttribute("mark", String.valueOf(value));
+            });
+            var avg = document.createElement("average");
+            avg.setTextContent(String.valueOf(stud.getAvg()));
+            student.appendChild(avg);
+        }
+        return document;
     }
 
     public static void main(String[] args) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse("DomStudent.xml");
-//            ReaderDOM obj = new ReaderDOM();
-//            obj.myPrint(document);
+            // TODO: Дописать ввод с консоли
+            Document document = builder.parse("src/main/resources/saxStudent.xml");
             document.getDocumentElement().normalize();
+
             NodeList list = document.getElementsByTagName("student");
             ArrayList<Student> students = ReaderDOM.parseInfoFromXML(list);
-            for (var st : students) {
-                checkAVG(st);
-            }
-            document = builder.newDocument();
-            Element rootElement = document.createElement("group");
-            document.appendChild(rootElement);
+            checkAVG(students);
+            formingXMLData(students, builder);
 
-            for (var stud : students) {
-                Element student = document.createElement("student");
-                rootElement.appendChild(student);
-                student.setAttribute("firstname", stud.getFirstname());
-                student.setAttribute("lastname", stud.getLastname());
-                student.setAttribute("groupnumber", stud.getGroupnumber());
-
-
-                var subjects = stud.getSubjects();
-
-                Document finalDocument = document;
-                subjects.forEach((key, value) -> {
-                    Element subject = finalDocument.createElement("subject");
-                    student.appendChild(subject);
-                    subject.setAttribute("title", key);
-                    subject.setAttribute("mark", String.valueOf(value));
-                });
-                var avg = document.createElement("average");
-                avg.setTextContent(String.valueOf(stud.getAvg()));
-                student.appendChild(avg);
-            }
-
-            writeXml(document, System.out);
+            //TODO: Дописать ввод с консоли
+            String fileName = "src/main/resources/resultDOM.xml";
+            writeXml(document, fileName);
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         } catch (TransformerException e) {
