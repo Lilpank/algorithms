@@ -110,25 +110,24 @@ public class ReaderDOM {
         for (var student : students) {
             var subjects = student.getSubjects();
             var numbers = subjects.values();
-            var avg = numbers.stream().reduce(Integer::sum).orElse(0) / numbers.toArray().length;
+
+            var avg = numbers.toArray().length != 0 ? numbers.stream().reduce(Integer::sum).orElse(0) / numbers.toArray().length : 0;
             if (avg != student.getAvg()) {
                 student.setAvg(avg);
             }
         }
     }
 
-    private static void writeXml(Document doc, String fileName)
-            throws TransformerException {
-
+    private static void writeXml(Document doc, String fileName) throws TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
-//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(new File(fileName));
         transformer.transform(source, result);
     }
 
-    public static Object formingXMLData(ArrayList<Student> students, DocumentBuilder builder) {
+    public static Document formingXMLData(ArrayList<Student> students, DocumentBuilder builder) {
         var document = builder.newDocument();
         Element rootElement = document.createElement("group");
         document.appendChild(rootElement);
@@ -167,7 +166,8 @@ public class ReaderDOM {
             NodeList list = document.getElementsByTagName("student");
             ArrayList<Student> students = ReaderDOM.parseInfoFromXML(list);
             checkAVG(students);
-            formingXMLData(students, builder);
+
+            document = formingXMLData(students, builder);
 
             //TODO: Дописать ввод с консоли
             String fileName = "src/main/resources/resultDOM.xml";
