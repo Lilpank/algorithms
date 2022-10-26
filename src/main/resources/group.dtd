@@ -4,7 +4,7 @@
 <!ATTLIST student
         firstname CDATA #REQUIRED
         lastname CDATA #REQUIRED
-        groupnumber CDATA #REQUIRED
+        groupNumber CDATA #REQUIRED
         >
 <!ELEMENT subject EMPTY>
 <!ATTLIST subject

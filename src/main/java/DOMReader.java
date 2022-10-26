@@ -12,13 +12,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ReaderDOM {
+public class DOMReader {
     private int indent = 0;
     final static int INDENT = 4;
 
@@ -164,7 +162,7 @@ public class ReaderDOM {
             document.getDocumentElement().normalize();
 
             NodeList list = document.getElementsByTagName("student");
-            ArrayList<Student> students = ReaderDOM.parseInfoFromXML(list);
+            ArrayList<Student> students = DOMReader.parseInfoFromXML(list);
             checkAVG(students);
 
             document = formingXMLData(students, builder);
