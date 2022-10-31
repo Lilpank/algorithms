@@ -11,6 +11,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class SAXReader extends DefaultHandler {
     private int indent = 0;
@@ -38,7 +39,7 @@ public class SAXReader extends DefaultHandler {
         String title = attributes.getValue("title");
         String firstName = attributes.getValue("firstname");
         String lastname = attributes.getValue("lastname");
-        String groupnumber = attributes.getValue("groupnumber");
+        String groupnumber = attributes.getValue("groupNumber");
         String mark = attributes.getValue("mark");
 
         printString("Элемент " + qName + ":");
@@ -61,10 +62,12 @@ public class SAXReader extends DefaultHandler {
 
             var elements = group.getJSONObject(studentName);
             int avg = 0;
-            for (var key : elements.names()) {
-                avg += elements.getInt((String) key);
+            if (!elements.isEmpty() && elements.names() != null) {
+                for (var key : elements.names()) {
+                    avg += elements.getInt((String) key);
+                }
+                avg = avg / elements.names().length();
             }
-            avg = avg / elements.names().length();
             if (average == 0) {
                 System.err.println("Для студента " + studentName + " была проставлена оценка " + avg);
             } else if (avg != average) {
@@ -94,8 +97,11 @@ public class SAXReader extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         indent += INDENT;
         String str = new String(ch, start, length);
-        average = Integer.parseInt(str.trim());
-        printString("" + average);
+        if (!str.trim().isEmpty()) {
+            average = Integer.parseInt(str.trim());
+            printString("" + average);
+        }
+
         indent -= INDENT;
     }
 
@@ -118,7 +124,9 @@ public class SAXReader extends DefaultHandler {
         SAXParser parser = null;
         try {
             parser = factory.newSAXParser();
-            parser.parse("file:///src/main/resources/saxStudent.xml", handler);
+            System.out.println("Введите название файла с которого нужно читать: ");
+            String fileName = new Scanner(System.in).nextLine();
+            parser.parse("src/main/resources/" + fileName + ".xml", handler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

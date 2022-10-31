@@ -1,9 +1,11 @@
 package model.JAXB;
 
-import jakarta.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @XmlRootElement(name = "student")
 @XmlType(propOrder = {"firstname", "lastname", "groupNumber", "subject", "avg"})

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class DOMReader {
     private int indent = 0;
@@ -84,7 +85,7 @@ public class DOMReader {
                 Element element = (Element) node;
                 student.setFirstname(node.getAttributes().getNamedItem("firstname").getTextContent());
                 student.setLastname(node.getAttributes().getNamedItem("lastname").getTextContent());
-                student.setGroupnumber(node.getAttributes().getNamedItem("groupnumber").getTextContent());
+                student.setGroupnumber(node.getAttributes().getNamedItem("groupNumber").getTextContent());
                 try {
                     student.setAvg(Integer.parseInt(element.getElementsByTagName("average").item(0).getTextContent()));
                 } catch (NullPointerException ignored) {
@@ -135,7 +136,7 @@ public class DOMReader {
             rootElement.appendChild(student);
             student.setAttribute("firstname", stud.getFirstname());
             student.setAttribute("lastname", stud.getLastname());
-            student.setAttribute("groupnumber", stud.getGroupnumber());
+            student.setAttribute("groupNumber", stud.getGroupnumber());
 
 
             var subjects = stud.getSubjects();
@@ -157,8 +158,10 @@ public class DOMReader {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            // TODO: Дописать ввод с консоли
-            Document document = builder.parse("src/main/resources/saxStudent.xml");
+            System.out.println("Введите название файла с которого нужно читать: ");
+            String fileName = new Scanner(System.in).nextLine();
+
+            Document document = builder.parse("src/main/resources/" + fileName + ".xml");
             document.getDocumentElement().normalize();
 
             NodeList list = document.getElementsByTagName("student");
@@ -166,10 +169,9 @@ public class DOMReader {
             checkAVG(students);
 
             document = formingXMLData(students, builder);
-
-            //TODO: Дописать ввод с консоли
-            String fileName = "src/main/resources/resultDOM.xml";
-            writeXml(document, fileName);
+            System.out.println("Введите название файла для записи: ");
+            fileName = new Scanner(System.in).nextLine();
+            writeXml(document, "src/main/resources/" + fileName + ".xml");
         } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         } catch (TransformerException e) {

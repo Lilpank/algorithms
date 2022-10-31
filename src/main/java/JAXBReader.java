@@ -4,22 +4,26 @@ import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
 import model.JAXB.GroupJAXB;
 import model.JAXB.Subjects;
+import org.w3c.dom.Document;
 
 import java.io.File;
+import java.util.Scanner;
 
 public class JAXBReader {
     public static void main(String[] args) {
-        String fileName = "src/main/resources/saxStudent.xml";
+        System.out.println("Введите название файла с которого нужно читать: ");
+        String fileName = new Scanner(System.in).nextLine();
 
-        var groupStudents = fromXmlToObject(fileName);
+        var groupStudents = fromXmlToObject("src/main/resources/" + fileName + ".xml");
         assert groupStudents != null;
 
         groupStudents.getStudents().stream().filter(y -> y.getSubject() != null).forEach(student -> {
             var avg = student.getSubject().size() != 0 ? student.getSubject().stream().mapToInt(Subjects::getMark).sum() / student.getSubject().size() : 0;
             if (avg != student.getAvg()) student.setAvg(avg);
         });
-
-        convertObjectToXml(groupStudents, "src/main/resources/resultJAXB.xml");
+        System.out.println("Введите название файла для записи: ");
+        fileName = new Scanner(System.in).nextLine();
+        convertObjectToXml(groupStudents, "src/main/resources/" + fileName + ".xml");
     }
 
     private static GroupJAXB fromXmlToObject(String filePath) {
