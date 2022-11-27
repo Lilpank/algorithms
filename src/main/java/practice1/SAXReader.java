@@ -1,5 +1,6 @@
+package practice1;
+
 import org.json.JSONObject;
-import org.w3c.dom.ls.LSOutput;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;

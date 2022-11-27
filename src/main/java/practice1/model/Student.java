@@ -1,4 +1,4 @@
-package model;
+package practice1.model;
 
 import java.util.HashMap;
 

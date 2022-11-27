@@ -1,10 +1,11 @@
+package practice1;
+
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
 import jakarta.xml.bind.Unmarshaller;
-import model.JAXB.GroupJAXB;
-import model.JAXB.Subjects;
-import org.w3c.dom.Document;
+import practice1.model.JAXB.GroupJAXB;
+import practice1.model.JAXB.Subjects;
 
 import java.io.File;
 import java.util.Scanner;

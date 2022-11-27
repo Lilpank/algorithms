@@ -1,4 +1,6 @@
-import model.Student;
+package practice1;
+
+import practice1.model.Student;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

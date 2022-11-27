@@ -1,4 +1,4 @@
-package model.JAXB;
+package practice1.model.JAXB;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
