@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <group>
-    <student firstname="Krechka" lastname="Gachi" groupNumber="6406">
+    <student id="Krechka" id_chat="Gachi" groupNumber="6406">
         <subject title="Maths" mark="5"/>
         <subject title="M" mark="3"/>
         <average>5</average>
     </student>
-    <student firstname="Ivan" lastname="Ivanov" groupNumber="6406">
+    <student id="Ivan" id_chat="Ivanov" groupNumber="6406">
         <subject title="Physics" mark="1"/>
         <subject title="Maths" mark="3"/>
         <subject title="M" mark="2"/>
     </student>
-    <student firstname="In" lastname="OOO" groupNumber="6406">
+    <student id="In" id_chat="OOO" groupNumber="6406">
         <subject title="Physics" mark="4"/>
         <subject title="pq" mark="3"/>
         <average>5</average>

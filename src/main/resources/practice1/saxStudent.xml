@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <group>
-    <student firstname="Krechka" groupNumber="6406" lastname="Gachi">
+    <student id="Krechka" groupNumber="6406" id_chat="Gachi">
     </student>
-    <student firstname="Ivan" groupNumber="6406" lastname="Ivanov">
+    <student id="Ivan" groupNumber="6406" id_chat="Ivanov">
         <subject mark="5" title="Maths"/>
         <subject mark="5" title="M"/>
         <average>5</average>
     </student>
-    <student firstname="In" groupNumber="6406" lastname="OOO">
+    <student id="In" groupNumber="6406" id_chat="OOO">
         <subject mark="3" title="M"/>
         <average>5</average>
     </student>
