@@ -1,0 +1,50 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 1px;
+  grid-auto-rows: minmax(10px, auto);
+}
+.find1{
+  grid-column: 2;
+  grid-row: 1;
+}
+.find2{
+  grid-column: 2;
+  grid-row: 2;
+}
+.tableJoin{
+  grid-column: 5;
+  grid-row: 3;
+}
+.table1{
+      grid-column: 5;
+      grid-row: 4;
+}
+.table2{
+      grid-column: 5;
+      grid-row: 5;
+}
+.error_data{
+  grid-column: 8/10;
+  grid-row: 2;
+}
+.insert1{
+  grid-column: 2;
+  grid-row: 5;
+}
+.insert2{
+  grid-column: 2;
+  grid-row: 7;
+}
+.delete1{
+  grid-column: 3;
+  grid-row: 2;
+}
+.delete2{
+  grid-column: 3;
+  grid-row: 1;
+}
+.clear{
+  grid-column: 5;
+  grid-row: 1;
+}

@@ -46,7 +46,7 @@ public class Main {
         var id = selectIdFromTable(connection, "participants") + 1;
 
         try (Statement stmt = connection.createStatement()) {
-            var sqlCommand = "Select * from names";
+            var sqlCommand = "Select * from names;";
             ResultSet rs = stmt.executeQuery(sqlCommand);
             System.out.println("В таблице names находятся данные: ");
             while (rs.next()) {
@@ -66,7 +66,7 @@ public class Main {
     }
 
     public static int selectIdFromTable(Connection connection, String tableName) {
-        String query = "select max(id) from " + tableName + "";
+        String query = "select max(id) from " + tableName + ";";
         var maxId = 0;
         try (Statement stmt = connection.createStatement()) {
             var rs = stmt.executeQuery(query);
@@ -85,7 +85,7 @@ public class Main {
         printTable(connection, "participants");
         var id = new Scanner(System.in).next();
         printTable(connection, "names");
-        String query = "Delete from participants where id=?";
+        String query = "Delete from participants where id=?;";
         try {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, Integer.parseInt(id));
@@ -176,24 +176,27 @@ public class Main {
             var command = new Scanner(System.in).next();
             try {
                 switch (command) {
-                    case "1":
+                    case "1" -> {
                         selectNaturalJoin(conn);
                         continue;
-                    case "2":
+                    }
+                    case "2" -> {
                         System.out.println("Введите user_id: ");
                         var user_id = new Scanner(System.in).next();
                         System.out.println("Введите name: ");
                         var name = new Scanner(System.in).next();
                         insertSecondTable(conn, user_id, name);
                         continue;
-                    case "3":
+                    }
+                    case "3" -> {
                         insertInOneTable(conn, new Scanner(System.in));
                         continue;
-                    case "4":
+                    }
+                    case "4" -> {
                         deleteFromTwoTable(conn, new Scanner(System.in));
                         continue;
-                    case "5":
-                        deleteFromOneTable(conn);
+                    }
+                    case "5" -> deleteFromOneTable(conn);
                 }
             } catch (Exception e) {
                 System.out.println(e);
